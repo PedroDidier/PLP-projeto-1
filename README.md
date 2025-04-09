@@ -21,25 +21,81 @@ Abaixo está um esboço simplificado (e não definitivo) de como a gramática da
 ```
 <program> ::= <statement_list>
 
-<statement_list> ::= <statement> 
+<statement_list> ::= <statement>
                    | <statement> <statement_list>
 
-<statement> ::= <load_stmt> 
+<statement> ::= <load_stmt>
               | <clean_stmt>
               | <normalize_stmt>
+              | <save_stmt>
               | <transform_stmt>
 
+;-------------------------------------------------------
+; 1) LOAD: Carrega um CSV em um DataFrame
+;    Exemplo:
+;    LOAD "data.csv" AS df_clientes
+;-------------------------------------------------------
 <load_stmt> ::= "LOAD" <string> ["AS" <identifier>]
 
-<clean_stmt> ::= "CLEAN" <identifier> [ "DROP" <column_list> ]
-                               [ "FILL" <column_value_pairs> ]
-                               [ "RENAME" <old_new_pair_list> ]
+;-------------------------------------------------------
+; 2) CLEAN: Operações de limpeza no dataset
+;    DROP: remove colunas
+;    FILL: substitui dados faltantes em colunas específicas
+;    DROPROWS: remove linhas com dados faltantes (pode ser geral ou por colunas)
+;    RENAME: renomeia colunas
+;
+;    Exemplo:
+;    CLEAN df_clientes DROP "sobrenome"
+;    CLEAN df_clientes FILL "idade"=0
+;    CLEAN df_clientes DROPROWS
+;    CLEAN df_clientes RENAME "colAntiga->colNova"
+;-------------------------------------------------------
+<clean_stmt> ::= "CLEAN" <identifier> <clean_action_list>
 
-<normalize_stmt> ::= "NORMALIZE" <identifier> [ "SCALER" <scaler_type> ]
-                                         [ "COLUMNS" <column_list> ]
+<clean_action_list> ::= <clean_action>
+                      | <clean_action> <clean_action_list>
 
-<transform_stmt> ::= "TRANSFORM" <identifier> "WITH" <function_call>
+<clean_action> ::= "DROP" <column_list>
+                 | "FILL" <column_value_pairs>
+                 | "DROPROWS" [ <column_list> ]
+                 | "RENAME" <old_new_pair_list>
 
+;-------------------------------------------------------
+; 3) NORMALIZE: Normaliza um DataFrame. Se for coluna numérica => Standard Scaling;
+;    se for coluna string => get_dummies (one-hot encoding).
+;    Funciona em todo o DataFrame <identifier>.
+;-------------------------------------------------------
+<normalize_stmt> ::= "NORMALIZE" <identifier>
+
+;-------------------------------------------------------
+; 4) SAVE: Salva o DataFrame em arquivo CSV.
+;    Exemplo:
+;    SAVE df_clientes TO "resultado.csv"
+;-------------------------------------------------------
+<save_stmt> ::= "SAVE" <identifier> ["TO" <string>]
+
+;-------------------------------------------------------
+; 5) TRANSFORM: Aplica operações matemáticas em colunas, via pandas.DataFrame.apply ou diretamente.
+;    Operações possíveis: ADD, SUB, MULT, DIV, POT
+;    Exemplo:
+;    TRANSFORM df_clientes WITH ADD "colA" 10 SUB "colB" "colC"
+;
+;    -> Interpretação:
+;       df_clientes["colA"] = df_clientes["colA"] + 10
+;       df_clientes["colB"] = df_clientes["colB"] - df_clientes["colC"]
+;-------------------------------------------------------
+<transform_stmt> ::= "TRANSFORM" <identifier> "WITH" <transform_op_list>
+
+<transform_op_list> ::= <transform_op>
+                      | <transform_op> <transform_op_list>
+
+<transform_op> ::= ( "ADD" | "SUB" | "MULT" | "DIV" | "POT" )
+                   <column_list>
+                   <value>
+
+;-------------------------------------------------------
+; Definições auxiliares
+;-------------------------------------------------------
 <column_list> ::= <string>
                 | <string> "," <column_list>
 
@@ -47,11 +103,23 @@ Abaixo está um esboço simplificado (e não definitivo) de como a gramática da
                        | <column_value_pair> "," <column_value_pairs>
 
 <column_value_pair> ::= <string> "=" <string>
+                      | <string> "=" <number>
 
 <old_new_pair_list> ::= <old_new_pair>
                       | <old_new_pair> "," <old_new_pair_list>
 
 <old_new_pair> ::= <string> "->" <string>
+
+<value> ::= <number>
+          | <string>
+          | <identifier>
+
+<number> ::= [0-9]+ ( "." [0-9]+ )?  ; // Exemplo simples: 123 ou 123.45
+
+<identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
+
+<string> ::= "\"" [^\"]* "\""
+           | "'" [^']* "'"
 ```
 
 Essa BNF ilustra apenas uma estrutura básica do que seria possível na linguagem. A ideia é permitir que o usuário escreva, por exemplo:
