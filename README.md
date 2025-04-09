@@ -30,26 +30,8 @@ Abaixo está um esboço simplificado (e não definitivo) de como a gramática da
               | <save_stmt>
               | <transform_stmt>
 
-;-------------------------------------------------------
-; 1) LOAD: Carrega um CSV em um DataFrame
-;    Exemplo:
-;    LOAD "data.csv" AS df_clientes
-;-------------------------------------------------------
 <load_stmt> ::= "LOAD" <string> ["AS" <identifier>]
 
-;-------------------------------------------------------
-; 2) CLEAN: Operações de limpeza no dataset
-;    DROP: remove colunas
-;    FILL: substitui dados faltantes em colunas específicas
-;    DROPROWS: remove linhas com dados faltantes (pode ser geral ou por colunas)
-;    RENAME: renomeia colunas
-;
-;    Exemplo:
-;    CLEAN df_clientes DROP "sobrenome"
-;    CLEAN df_clientes FILL "idade"=0
-;    CLEAN df_clientes DROPROWS
-;    CLEAN df_clientes RENAME "colAntiga->colNova"
-;-------------------------------------------------------
 <clean_stmt> ::= "CLEAN" <identifier> <clean_action_list>
 
 <clean_action_list> ::= <clean_action>
@@ -60,30 +42,10 @@ Abaixo está um esboço simplificado (e não definitivo) de como a gramática da
                  | "DROPROWS" [ <column_list> ]
                  | "RENAME" <old_new_pair_list>
 
-;-------------------------------------------------------
-; 3) NORMALIZE: Normaliza um DataFrame. Se for coluna numérica => Standard Scaling;
-;    se for coluna string => get_dummies (one-hot encoding).
-;    Funciona em todo o DataFrame <identifier>.
-;-------------------------------------------------------
 <normalize_stmt> ::= "NORMALIZE" <identifier>
 
-;-------------------------------------------------------
-; 4) SAVE: Salva o DataFrame em arquivo CSV.
-;    Exemplo:
-;    SAVE df_clientes TO "resultado.csv"
-;-------------------------------------------------------
 <save_stmt> ::= "SAVE" <identifier> ["TO" <string>]
 
-;-------------------------------------------------------
-; 5) TRANSFORM: Aplica operações matemáticas em colunas, via pandas.DataFrame.apply ou diretamente.
-;    Operações possíveis: ADD, SUB, MULT, DIV, POT
-;    Exemplo:
-;    TRANSFORM df_clientes WITH ADD "colA" 10 SUB "colB" "colC"
-;
-;    -> Interpretação:
-;       df_clientes["colA"] = df_clientes["colA"] + 10
-;       df_clientes["colB"] = df_clientes["colB"] - df_clientes["colC"]
-;-------------------------------------------------------
 <transform_stmt> ::= "TRANSFORM" <identifier> "WITH" <transform_op_list>
 
 <transform_op_list> ::= <transform_op>
