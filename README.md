@@ -107,6 +107,25 @@ Passo a passo:
 5. Executor	executa os nós da AST usando pandas
 6. Retorno do resultado para o usuário
 
+# Diagrama de Classes
+
+Estrutura de classes da AST (Abstract Syntax Tree), ou seja, como as instruções da DSL vão ser representadas no código Python.
+
+![](imgs/class_diag.png)
+
+#####  Classe base
+ASTNode 
+ :arrow_right: Classe abstrata, que define a estrutura comum para todos os comandos.
+ :arrow_right: Possui os métodos execute e validate, que devem ser sobrescritos por cada comando específico.
+
+##### Subclasses 
+Cada comando da DSL é implementado como uma subclasse da ASTNode. 
+ - LoadNode: Carrega um arquivo CSV.
+ - SaveNode: Salva o DataFrame resultante.
+ - NormalizeNode: Normaliza colunas numéricas ou transforma em categóricas
+ - DropNode, FillNode, etc.: Realizam operações de limpeza, como remover colunas ou preencher valores ausentes.
+
+
 
 
 
