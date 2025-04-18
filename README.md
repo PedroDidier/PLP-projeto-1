@@ -5,15 +5,15 @@
 # Proposta/Objetivo do Projeto
 Este projeto tem como objetivo desenvolver uma DSL (Domain-Specific Language) voltada para operações de carregamento, limpeza e normalização de dados.
 
- A DSL será traduzida para chamadas da biblioteca Pandas em Python, permitindo que pessoas não técnicas em dados escrevam scripts em uma linguagem de alto nível e expressiva, sem precisarem conhecer a fundo cada detalhe da API do Pandas.
+A DSL será uma extensão da linguagem imperativa 1 do JavaCC, de forma que sua utilização seja intuitiva, permitindo que pessoas não técnicas em dados escrevam scripts em uma linguagem de alto nível e expressiva, sem precisarem conhecer a fundo cada detalhe da API do Pandas.
  
- Quanto ao escopo, o propósito é oferecer uma DSL suficiente, capaz de lidar com múltiplas etapas do pipeline, como:
- - Normalização de valores
- - Salvamento e carregamento de datasets
- - Limpeza de dados (tratamento de valores ausentes, remoção de colunas e renames)
- - Transformação dos dados (PLUS)
+Quanto ao escopo, o propósito é oferecer uma DSL suficiente, capaz de lidar com múltiplas etapas do pipeline, como:
+- Normalização de valores
+- Salvamento e carregamento de datasets
+- Limpeza de dados (tratamento de valores ausentes, remoção de colunas e renames)
+- Transformação dos dados (PLUS)
 
- Para isso, será definida formalmente a gramática, criada uma arquitetura modular e implementado um parser que traduz as instruções da DSL para as operações correspondentes em Pandas.
+Para isso, será definida formalmente a gramática, criada uma arquitetura modular e implementado um parser que traduz as instruções da DSL para as operações correspondentes em Pandas.
 
 # Visão Básica da BNF
 Abaixo está um esboço simplificado (e não definitivo) de como a gramática da DSL poderia ser estruturada:
@@ -22,7 +22,6 @@ Abaixo está um esboço simplificado (e não definitivo) de como a gramática da
 <program> ::= <statement_list>
 
 <statement_list> ::= <statement>
-                   | <statement> <statement_list>
 
 <statement> ::= <load_stmt>
               | <clean_stmt>
