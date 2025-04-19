@@ -16,6 +16,7 @@
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/expressions2/expression/ExpOr.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/expressions2/expression/ExpNot.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/imperative1/declaration/Declaracao.java
+/home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/imperative1/command/Load.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/imperative1/command/Read.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/target/generated-sources/javacc/li1/plp/imperative1/parser/Token.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/expressions2/memory/Ambiente.java
@@ -33,6 +34,7 @@
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/expressions2/memory/IdentificadorNaoDeclaradoException.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/imperative1/command/Atribuicao.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/imperative1/memory/AmbienteCompilacaoImperativa.java
+/home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/imperative1/command/Save.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/imperative1/declaration/DeclaracaoVariavel.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/target/generated-sources/javacc/li1/plp/imperative1/parser/JavaCharStream.java
 /home/nicol/plp/project_plp/PLP-projeto-1/scripts/src/li1/plp/expressions1/util/ToStringProvider.java

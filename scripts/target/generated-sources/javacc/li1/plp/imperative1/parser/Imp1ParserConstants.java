@@ -47,95 +47,93 @@ public interface Imp1ParserConstants {
   /** RegularExpression Id. */
   int ELSE = 23;
   /** RegularExpression Id. */
-  int PROC = 24;
+  int LPAREN = 24;
   /** RegularExpression Id. */
-  int CALL = 25;
+  int RPAREN = 25;
   /** RegularExpression Id. */
-  int INT = 26;
+  int LBRACE = 26;
   /** RegularExpression Id. */
-  int BOOLEAN = 27;
+  int RBRACE = 27;
   /** RegularExpression Id. */
-  int STRING = 28;
+  int LBRACKET = 28;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 29;
+  int RBRACKET = 29;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 30;
+  int SEMICOLON = 30;
   /** RegularExpression Id. */
-  int HEX_LITERAL = 31;
+  int COMMA = 31;
   /** RegularExpression Id. */
-  int OCTAL_LITERAL = 32;
+  int DOT = 32;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 33;
+  int LOAD = 33;
   /** RegularExpression Id. */
-  int IDENTIFIER = 34;
+  int CLEAN = 34;
   /** RegularExpression Id. */
-  int LETTER = 35;
+  int NORMALIZE = 35;
   /** RegularExpression Id. */
-  int DIGIT = 36;
+  int SAVE = 36;
   /** RegularExpression Id. */
-  int LPAREN = 37;
+  int TRANSFORM = 37;
   /** RegularExpression Id. */
-  int RPAREN = 38;
+  int AS = 38;
   /** RegularExpression Id. */
-  int LBRACE = 39;
+  int ATTRIB = 39;
   /** RegularExpression Id. */
-  int RBRACE = 40;
+  int ASSIGN = 40;
   /** RegularExpression Id. */
-  int LBRACKET = 41;
+  int GT = 41;
   /** RegularExpression Id. */
-  int RBRACKET = 42;
+  int LT = 42;
   /** RegularExpression Id. */
-  int SEMICOLON = 43;
+  int BANG = 43;
   /** RegularExpression Id. */
-  int COMMA = 44;
+  int TILDE = 44;
   /** RegularExpression Id. */
-  int DOT = 45;
+  int HOOK = 45;
   /** RegularExpression Id. */
-  int ATTRIB = 46;
+  int COLON = 46;
   /** RegularExpression Id. */
-  int ASSIGN = 47;
+  int EQ = 47;
   /** RegularExpression Id. */
-  int GT = 48;
+  int LE = 48;
   /** RegularExpression Id. */
-  int LT = 49;
+  int GE = 49;
   /** RegularExpression Id. */
-  int BANG = 50;
+  int NE = 50;
   /** RegularExpression Id. */
-  int TILDE = 51;
+  int SC_OR = 51;
   /** RegularExpression Id. */
-  int HOOK = 52;
+  int SC_AND = 52;
   /** RegularExpression Id. */
-  int COLON = 53;
+  int CONCAT = 53;
   /** RegularExpression Id. */
-  int EQ = 54;
+  int PLUS = 54;
   /** RegularExpression Id. */
-  int LE = 55;
+  int MINUS = 55;
   /** RegularExpression Id. */
-  int GE = 56;
+  int STAR = 56;
   /** RegularExpression Id. */
-  int NE = 57;
+  int SLASH = 57;
   /** RegularExpression Id. */
-  int SC_OR = 58;
+  int BIT_AND = 58;
   /** RegularExpression Id. */
-  int SC_AND = 59;
+  int BIT_OR = 59;
   /** RegularExpression Id. */
-  int CONCAT = 60;
+  int XOR = 60;
   /** RegularExpression Id. */
-  int PLUS = 61;
+  int REM = 61;
   /** RegularExpression Id. */
-  int MINUS = 62;
+  int INTEGER_LITERAL = 62;
   /** RegularExpression Id. */
-  int STAR = 63;
+  int DECIMAL_LITERAL = 63;
   /** RegularExpression Id. */
-  int SLASH = 64;
+  int HEX_LITERAL = 64;
   /** RegularExpression Id. */
-  int BIT_AND = 65;
+  int OCTAL_LITERAL = 65;
   /** RegularExpression Id. */
-  int BIT_OR = 66;
+  int STRING_LITERAL = 66;
   /** RegularExpression Id. */
-  int XOR = 67;
-  /** RegularExpression Id. */
-  int REM = 68;
+  int IDENTIFIER = 67;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -166,19 +164,6 @@ public interface Imp1ParserConstants {
     "\"if\"",
     "\"then\"",
     "\"else\"",
-    "\"proc\"",
-    "\"call\"",
-    "\"int\"",
-    "\"boolean\"",
-    "\"string\"",
-    "<INTEGER_LITERAL>",
-    "<DECIMAL_LITERAL>",
-    "<HEX_LITERAL>",
-    "<OCTAL_LITERAL>",
-    "<STRING_LITERAL>",
-    "<IDENTIFIER>",
-    "<LETTER>",
-    "<DIGIT>",
     "\"(\"",
     "\")\"",
     "\"{\"",
@@ -188,6 +173,12 @@ public interface Imp1ParserConstants {
     "\";\"",
     "\",\"",
     "\".\"",
+    "\"LOAD\"",
+    "\"CLEAN\"",
+    "\"NORMALIZE\"",
+    "\"SAVE\"",
+    "\"TRANSFORM\"",
+    "\"AS\"",
     "\":=\"",
     "\"=\"",
     "\">\"",
@@ -211,6 +202,12 @@ public interface Imp1ParserConstants {
     "\"|\"",
     "\"^\"",
     "\"%\"",
+    "<INTEGER_LITERAL>",
+    "<DECIMAL_LITERAL>",
+    "<HEX_LITERAL>",
+    "<OCTAL_LITERAL>",
+    "<STRING_LITERAL>",
+    "<IDENTIFIER>",
   };
 
 }

@@ -1,18 +1,15 @@
-{
-  var a = 3,
-  var c = 0;
-  read(c);
-  write(a);
-  write(c);
-  { var a = 2,
-    var b = 5,
-    var c = false,
-    var d = "oi";
-    read(c);
-    write(a);
-    write(b+a);
-    write(c);
-    write(d)
-  };
-  write(a)
-}
+LOAD "Testes/testeload.csv" AS table
+
+LOAD "Testes/testeload.csv" AS t1;
+LOAD "Testes/testeload2.csv" AS t2
+
+LOAD "Testes/testeload.csv" AS t1;
+LOAD "Testes/testeload2.csv" AS t2;
+SAVE t1 AS "Testes/resultadot1.csv"
+
+LOAD "Testes/testeload.csv" AS t1;
+SAVE t1 AS "Testes/resultadot1.csv"
+
+LOAD "Testes/testeload.csv" AS t1;
+LOAD "Testes/testeload2.csv" AS c1;
+SAVE t1 AS "Testes/resultadot1.csv
