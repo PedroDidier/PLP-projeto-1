@@ -683,3 +683,18 @@ DeclaracaoVariavel PDeclaracaoVariavel() :
 		return retorno;
 	}
 }
+
+Comando PClean():
+{
+    Token t1, t2;
+    String nomeVariavel;
+    String strategy = "drop";
+}
+{
+    <CLEAN>
+    t1 = <IDENTIFIER> { nomeVariavel = t1.image; }
+    [
+        t2 = <IDENTIFIER> { strategy = t2.image; }
+    ]
+    { return new Clean(nomeVariavel, strategy); }
+}

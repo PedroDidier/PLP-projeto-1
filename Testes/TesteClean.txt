@@ -1,0 +1,32 @@
+LOAD "Testes/testeload.csv" AS t1;
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t1;
+SAVE t2 AS "Testes/resultadot1.csv"
+
+LOAD "Testes/testeload.csv" AS t1;
+CLEAN ALL;
+LOAD "Testes/testeload2.csv" AS t2;
+SAVE t2 AS "Testes/resultadot1.csv"
+
+LOAD "Testes/testeload.csv" AS t1;
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t1;
+CLEAN t2;
+LOAD "Testes/testeload.csv" AS t1;
+SAVE t1 AS "Testes/resultadot1.csv"
+
+LOAD "Testes/testeload.csv" AS t1;
+CLEAN t1;
+SAVE t1 AS "Testes/resultadot1.csv"
+
+LOAD "Testes/testeload.csv" AS t1;
+CLEAN t1 WITH STRATEGY "fill";
+SAVE t1 AS "Testes/resultadot1.csv"
+
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 WITH STRATEGY "drop";
+SAVE t2 AS "Testes/resultadot1.csv"
+
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 WITH STRATEGY "fill";
+SAVE t2 AS "Testes/resultadot1.csv" 
