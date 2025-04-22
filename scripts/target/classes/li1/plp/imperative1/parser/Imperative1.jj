@@ -630,6 +630,7 @@ Comando PComandoSimples() :
       | retorno = PIfThenElse()
       | retorno = PIO()
       | retorno = PClean()
+      | retorno = PNormalize()
       | <LPAREN> retorno = PComando() <RPAREN>
    	)
     {
@@ -776,4 +777,23 @@ Map POldNewPairList():
         { pairs.put(oldName.image, newName.image); }
     )*
     { return pairs; }
+}
+
+Comando PNormalize():
+{
+    Token t1;
+    String nomeVariavel;
+    List columnList = new ArrayList();
+}
+{
+    <NORMALIZE>
+    t1 = <IDENTIFIER> { nomeVariavel = t1.image; }
+    [ columnList = PColumnList() ]
+    {
+        if (columnList.isEmpty()) {
+            return new Normalize(nomeVariavel);
+        } else {
+            return new Normalize(nomeVariavel, columnList);
+        }
+    }
 }

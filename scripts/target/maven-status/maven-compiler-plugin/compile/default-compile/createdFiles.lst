@@ -66,6 +66,7 @@ li1/plp/expressions2/memory/VariavelJaDeclaradaException.class
 li1/plp/imperative1/memory/ContextoExecucaoImperativa.class
 li1/plp/expressions2/memory/VariavelNaoDeclaradaException.class
 li1/plp/expressions2/memory/IdentificadorNaoDeclaradoException.class
+li1/plp/imperative1/command/Normalize.class
 li1/plp/imperative1/declaration/DeclaracaoComposta.class
 li1/plp/expressions2/memory/IdentificadorJaDeclaradoException.class
 li1/plp/imperative1/command/IO.class
