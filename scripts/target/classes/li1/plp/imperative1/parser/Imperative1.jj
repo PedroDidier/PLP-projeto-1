@@ -147,6 +147,10 @@ TOKEN : /* COMANDOS */
 | < SAVE: "SAVE" >
 | < TRANSFORM: "TRANSFORM" >
 | < AS: "AS" >
+| < DROP: "DROP" >
+| < FILL: "FILL" >
+| < DROPROWS: "DROPROWS" >
+| < RENAME: "RENAME" >
 }
 
 TOKEN : /* OPERATORS */
@@ -625,6 +629,7 @@ Comando PComandoSimples() :
       | retorno = PWhile()
       | retorno = PIfThenElse()
       | retorno = PIO()
+      | retorno = PClean()
       | <LPAREN> retorno = PComando() <RPAREN>
    	)
     {
@@ -686,15 +691,89 @@ DeclaracaoVariavel PDeclaracaoVariavel() :
 
 Comando PClean():
 {
-    Token t1, t2;
+    Token t1;
     String nomeVariavel;
-    String strategy = "drop";
+    String action;
+    List columnList = new ArrayList();
+    Map columnValuePairs = new HashMap();
+    Map oldNewPairs = new HashMap();
 }
 {
     <CLEAN>
     t1 = <IDENTIFIER> { nomeVariavel = t1.image; }
-    [
-        t2 = <IDENTIFIER> { strategy = t2.image; }
-    ]
-    { return new Clean(nomeVariavel, strategy); }
+    (
+        <DROP> 
+        { action = "DROP"; }
+        columnList = PColumnList()
+        { return new Clean(nomeVariavel, action, columnList); }
+      | <FILL>
+        { action = "FILL"; }
+        columnValuePairs = PColumnValuePairs()
+        { return new Clean(nomeVariavel, action, columnValuePairs); }
+      | <DROPROWS>
+        { action = "DROPROWS"; }
+        [ columnList = PColumnList() ]
+        { return new Clean(nomeVariavel, action, columnList); }
+      | <RENAME>
+        { action = "RENAME"; }
+        oldNewPairs = POldNewPairList()
+        { return new Clean(nomeVariavel, action, oldNewPairs, true); }
+      | t1 = <IDENTIFIER> 
+        { 
+            action = t1.image; 
+            return new Clean(nomeVariavel, action.toLowerCase());
+        }
+    )
+}
+
+List PColumnList():
+{
+    Token t;
+    List columnList = new ArrayList();
+}
+{
+    t = <IDENTIFIER> { columnList.add(t.image); }
+    (
+        <COMMA> t = <IDENTIFIER> { columnList.add(t.image); }
+    )*
+    { return columnList; }
+}
+
+Map PColumnValuePairs():
+{
+    Token colName, value;
+    Map pairs = new HashMap();
+    String valorSemAspas;
+}
+{
+    colName = <IDENTIFIER> <ASSIGN> value = <STRING_LITERAL> 
+    { 
+        // Remover as aspas do valor da string
+        valorSemAspas = value.image.substring(1, value.image.length() - 1);
+        pairs.put(colName.image, valorSemAspas); 
+    }
+    (
+        <COMMA> colName = <IDENTIFIER> <ASSIGN> value = <STRING_LITERAL> 
+        { 
+            // Remover as aspas do valor da string
+            valorSemAspas = value.image.substring(1, value.image.length() - 1);
+            pairs.put(colName.image, valorSemAspas); 
+        }
+    )*
+    { return pairs; }
+}
+
+Map POldNewPairList():
+{
+    Token oldName, newName;
+    Map pairs = new HashMap();
+}
+{
+    oldName = <IDENTIFIER> <ASSIGN> newName = <IDENTIFIER> 
+    { pairs.put(oldName.image, newName.image); }
+    (
+        <COMMA> oldName = <IDENTIFIER> <ASSIGN> newName = <IDENTIFIER> 
+        { pairs.put(oldName.image, newName.image); }
+    )*
+    { return pairs; }
 }

@@ -1,32 +1,48 @@
-LOAD "Testes/testeload.csv" AS t1;
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t1;
-SAVE t2 AS "Testes/resultadot1.csv"
-
-LOAD "Testes/testeload.csv" AS t1;
-CLEAN ALL;
-LOAD "Testes/testeload2.csv" AS t2;
-SAVE t2 AS "Testes/resultadot1.csv"
-
-LOAD "Testes/testeload.csv" AS t1;
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t1;
-CLEAN t2;
-LOAD "Testes/testeload.csv" AS t1;
-SAVE t1 AS "Testes/resultadot1.csv"
-
+// Testes básicos
 LOAD "Testes/testeload.csv" AS t1;
 CLEAN t1;
-SAVE t1 AS "Testes/resultadot1.csv"
+SAVE t1 AS "Testes/resultado_clean_padrao.csv"
 
+// Testes DROPROWS
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 DROPROWS;
+SAVE t2 AS "Testes/resultado_droprows_todas.csv"
+
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 DROPROWS idade, nome;
+SAVE t2 AS "Testes/resultado_droprows_especifico.csv"
+
+// Testes DROP
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 DROP idade;
+SAVE t2 AS "Testes/resultado_drop_coluna.csv"
+
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 DROP idade, nome;
+SAVE t2 AS "Testes/resultado_drop_multiplas_colunas.csv"
+
+// Testes FILL
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 FILL idade = "0", nome = "desconhecido";
+SAVE t2 AS "Testes/resultado_fill.csv"
+
+// Testes RENAME
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 RENAME idade = idadeAnos, nome = nomeCompleto;
+SAVE t2 AS "Testes/resultado_rename.csv"
+
+// Testes combinados
+LOAD "Testes/testeload2.csv" AS t2;
+CLEAN t2 DROP idade;
+CLEAN t2 FILL nome = "desconhecido";
+CLEAN t2 RENAME nome = nomeCompleto;
+SAVE t2 AS "Testes/resultado_combinado.csv"
+
+// Testes legados
 LOAD "Testes/testeload.csv" AS t1;
 CLEAN t1 WITH STRATEGY "fill";
-SAVE t1 AS "Testes/resultadot1.csv"
+SAVE t1 AS "Testes/resultado_legado_fill.csv"
 
 LOAD "Testes/testeload2.csv" AS t2;
 CLEAN t2 WITH STRATEGY "drop";
-SAVE t2 AS "Testes/resultadot1.csv"
-
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t2 WITH STRATEGY "fill";
-SAVE t2 AS "Testes/resultadot1.csv" 
+SAVE t2 AS "Testes/resultado_legado_drop.csv" 

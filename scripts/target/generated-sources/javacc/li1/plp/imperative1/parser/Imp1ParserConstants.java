@@ -77,63 +77,71 @@ public interface Imp1ParserConstants {
   /** RegularExpression Id. */
   int AS = 38;
   /** RegularExpression Id. */
-  int ATTRIB = 39;
+  int DROP = 39;
   /** RegularExpression Id. */
-  int ASSIGN = 40;
+  int FILL = 40;
   /** RegularExpression Id. */
-  int GT = 41;
+  int DROPROWS = 41;
   /** RegularExpression Id. */
-  int LT = 42;
+  int RENAME = 42;
   /** RegularExpression Id. */
-  int BANG = 43;
+  int ATTRIB = 43;
   /** RegularExpression Id. */
-  int TILDE = 44;
+  int ASSIGN = 44;
   /** RegularExpression Id. */
-  int HOOK = 45;
+  int GT = 45;
   /** RegularExpression Id. */
-  int COLON = 46;
+  int LT = 46;
   /** RegularExpression Id. */
-  int EQ = 47;
+  int BANG = 47;
   /** RegularExpression Id. */
-  int LE = 48;
+  int TILDE = 48;
   /** RegularExpression Id. */
-  int GE = 49;
+  int HOOK = 49;
   /** RegularExpression Id. */
-  int NE = 50;
+  int COLON = 50;
   /** RegularExpression Id. */
-  int SC_OR = 51;
+  int EQ = 51;
   /** RegularExpression Id. */
-  int SC_AND = 52;
+  int LE = 52;
   /** RegularExpression Id. */
-  int CONCAT = 53;
+  int GE = 53;
   /** RegularExpression Id. */
-  int PLUS = 54;
+  int NE = 54;
   /** RegularExpression Id. */
-  int MINUS = 55;
+  int SC_OR = 55;
   /** RegularExpression Id. */
-  int STAR = 56;
+  int SC_AND = 56;
   /** RegularExpression Id. */
-  int SLASH = 57;
+  int CONCAT = 57;
   /** RegularExpression Id. */
-  int BIT_AND = 58;
+  int PLUS = 58;
   /** RegularExpression Id. */
-  int BIT_OR = 59;
+  int MINUS = 59;
   /** RegularExpression Id. */
-  int XOR = 60;
+  int STAR = 60;
   /** RegularExpression Id. */
-  int REM = 61;
+  int SLASH = 61;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 62;
+  int BIT_AND = 62;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 63;
+  int BIT_OR = 63;
   /** RegularExpression Id. */
-  int HEX_LITERAL = 64;
+  int XOR = 64;
   /** RegularExpression Id. */
-  int OCTAL_LITERAL = 65;
+  int REM = 65;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 66;
+  int INTEGER_LITERAL = 66;
   /** RegularExpression Id. */
-  int IDENTIFIER = 67;
+  int DECIMAL_LITERAL = 67;
+  /** RegularExpression Id. */
+  int HEX_LITERAL = 68;
+  /** RegularExpression Id. */
+  int OCTAL_LITERAL = 69;
+  /** RegularExpression Id. */
+  int STRING_LITERAL = 70;
+  /** RegularExpression Id. */
+  int IDENTIFIER = 71;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -179,6 +187,10 @@ public interface Imp1ParserConstants {
     "\"SAVE\"",
     "\"TRANSFORM\"",
     "\"AS\"",
+    "\"DROP\"",
+    "\"FILL\"",
+    "\"DROPROWS\"",
+    "\"RENAME\"",
     "\":=\"",
     "\"=\"",
     "\">\"",
