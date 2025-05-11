@@ -334,7 +334,6 @@ Load PLoad():
     pathToken = <STRING_LITERAL>
     [ <AS> idTok = <IDENTIFIER> ]
     {
-        // Aqui você pode remover as aspas e processar o caminho corretamente
         String path = pathToken.image.substring(1, pathToken.image.length() - 1); // Remove as aspas
         String alias = (idTok != null) ? idTok.image : null;
         return new Load(path, alias);
@@ -355,6 +354,62 @@ Save PSave() :
 		String alias = idTok.image;
         String path = pathToken.image.substring(1, pathToken.image.length() - 1);
         return new Save(path, alias);
+    }
+}
+
+Comando PClean():
+{
+    Token t1;
+    String nomeVariavel;
+    String action;
+    List columnList = new ArrayList();
+    Map columnValuePairs = new HashMap();
+    Map oldNewPairs = new HashMap();
+}
+{
+    <CLEAN>
+    t1 = <IDENTIFIER> { nomeVariavel = t1.image; }
+    (
+        <DROP> 
+        { action = "DROP"; }
+        columnList = PColumnList()
+        { return new Clean(nomeVariavel, action, columnList); }
+      | <FILL>
+        { action = "FILL"; }
+        columnValuePairs = PColumnValuePairs()
+        { return new Clean(nomeVariavel, action, columnValuePairs); }
+      | <DROPROWS>
+        { action = "DROPROWS"; }
+        [ columnList = PColumnList() ]
+        { return new Clean(nomeVariavel, action, columnList); }
+      | <RENAME>
+        { action = "RENAME"; }
+        oldNewPairs = POldNewPairList()
+        { return new Clean(nomeVariavel, action, oldNewPairs, true); }
+      | t1 = <IDENTIFIER> 
+        { 
+            action = t1.image; 
+            return new Clean(nomeVariavel, action.toLowerCase());
+        }
+    )
+}
+
+Comando PNormalize():
+{
+    Token t1;
+    String nomeVariavel;
+    List columnList = new ArrayList();
+}
+{
+    <NORMALIZE>
+    t1 = <IDENTIFIER> { nomeVariavel = t1.image; }
+    [ columnList = PColumnList() ]
+    {
+        if (columnList.isEmpty()) {
+            return new Normalize(nomeVariavel);
+        } else {
+            return new Normalize(nomeVariavel, columnList);
+        }
     }
 }
 
@@ -623,14 +678,14 @@ Comando PComandoSimples() :
     (
 		retorno = PLoad()
 	  | retorno = PSave()
+      | retorno = PClean()
+      | retorno = PNormalize()
       |	retorno = PSkip()
       | retorno = PAtribuicao()
       | retorno = PComandoDeclaracao()
       | retorno = PWhile()
       | retorno = PIfThenElse()
       | retorno = PIO()
-      | retorno = PClean()
-      | retorno = PNormalize()
       | <LPAREN> retorno = PComando() <RPAREN>
    	)
     {
@@ -690,43 +745,6 @@ DeclaracaoVariavel PDeclaracaoVariavel() :
 	}
 }
 
-Comando PClean():
-{
-    Token t1;
-    String nomeVariavel;
-    String action;
-    List columnList = new ArrayList();
-    Map columnValuePairs = new HashMap();
-    Map oldNewPairs = new HashMap();
-}
-{
-    <CLEAN>
-    t1 = <IDENTIFIER> { nomeVariavel = t1.image; }
-    (
-        <DROP> 
-        { action = "DROP"; }
-        columnList = PColumnList()
-        { return new Clean(nomeVariavel, action, columnList); }
-      | <FILL>
-        { action = "FILL"; }
-        columnValuePairs = PColumnValuePairs()
-        { return new Clean(nomeVariavel, action, columnValuePairs); }
-      | <DROPROWS>
-        { action = "DROPROWS"; }
-        [ columnList = PColumnList() ]
-        { return new Clean(nomeVariavel, action, columnList); }
-      | <RENAME>
-        { action = "RENAME"; }
-        oldNewPairs = POldNewPairList()
-        { return new Clean(nomeVariavel, action, oldNewPairs, true); }
-      | t1 = <IDENTIFIER> 
-        { 
-            action = t1.image; 
-            return new Clean(nomeVariavel, action.toLowerCase());
-        }
-    )
-}
-
 List PColumnList():
 {
     Token t;
@@ -779,21 +797,3 @@ Map POldNewPairList():
     { return pairs; }
 }
 
-Comando PNormalize():
-{
-    Token t1;
-    String nomeVariavel;
-    List columnList = new ArrayList();
-}
-{
-    <NORMALIZE>
-    t1 = <IDENTIFIER> { nomeVariavel = t1.image; }
-    [ columnList = PColumnList() ]
-    {
-        if (columnList.isEmpty()) {
-            return new Normalize(nomeVariavel);
-        } else {
-            return new Normalize(nomeVariavel, columnList);
-        }
-    }
-}

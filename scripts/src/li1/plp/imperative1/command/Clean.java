@@ -84,36 +84,6 @@ public class Clean implements Comando {
         return action;
     }
 
-    private boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    private String calculateMode(List<String> values) {
-        Map<String, Integer> frequency = new HashMap<>();
-        for (String value : values) {
-            frequency.put(value, frequency.getOrDefault(value, 0) + 1);
-        }
-        return Collections.max(frequency.entrySet(), Map.Entry.comparingByValue()).getKey();
-    }
-
-    private double calculateMean(List<String> values) {
-        double sum = 0;
-        int count = 0;
-        for (String value : values) {
-            if (!value.trim().isEmpty() && !value.equals("NA") && 
-                !value.equals("null") && !value.equals("NULL")) {
-                sum += Double.parseDouble(value);
-                count++;
-            }
-        }
-        return count > 0 ? sum / count : 0;
-    }
-
     @Override
     public AmbienteExecucaoImperativa executar(AmbienteExecucaoImperativa ambiente)
             throws VariavelJaDeclaradaException, VariavelNaoDeclaradaException,
@@ -192,7 +162,7 @@ public class Clean implements Comando {
                 linhasPreenchidas.add(cabecalho);
 
                 for (int i = 1; i < linhas.length; i++) {
-                    String[] valores = linhas[i].split(",");
+                    String[] valores = linhas[i].split(",", -1);
                     for (int j = 0; j < valores.length; j++) {
                         if (indiceValorFill.containsKey(j) && 
                             (valores[j].trim().isEmpty() || valores[j].trim().equals("NA") ||
@@ -229,7 +199,7 @@ public class Clean implements Comando {
                 linhasLimpas.add(cabecalho);
 
                 for (int i = 1; i < linhas.length; i++) {
-                    String[] valores = linhas[i].split(",");
+                    String[] valores = linhas[i].split(",", -1);
                     boolean temValorFaltante = false;
                     for (int indice : indicesColunas) {
                         if (indice < valores.length && 

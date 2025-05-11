@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 
 import li1.plp.imperative1.memory.ContextoCompilacaoImperativa;
 import li1.plp.imperative1.memory.ContextoExecucaoImperativa;
-//import li1.plp.imperative1.memory.ListaValor;
+import li1.plp.imperative1.memory.ListaValor;
 import li1.plp.imperative1.parser.Imp1Parser;
 
 

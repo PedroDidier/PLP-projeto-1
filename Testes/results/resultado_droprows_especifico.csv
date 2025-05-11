@@ -1,0 +1,6 @@
+id,nome,idade,email
+1,Ana,30,ana@email.com
+2,Bruno,,bruno@email.com
+4,,40,diana@email.com
+5,Eduardo,35,eduardo@email.com
+6,Fernanda,NA,fernanda@email.com

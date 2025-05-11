@@ -1,0 +1,5 @@
+LOAD "Testes/csvs/teste_load_save.csv" AS table
+
+LOAD "Testes/csvs/teste_load_save.csv" AS t1;
+LOAD "Testes/csvs/teste_load_save.csv" AS t2;
+SAVE t1 AS "Testes/results/resultado_load_save.csv"

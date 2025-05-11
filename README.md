@@ -19,22 +19,16 @@ Para isso, será definida formalmente a gramática, criada uma arquitetura modul
 Abaixo está um esboço simplificado (e não definitivo) de como a gramática da DSL poderia ser estruturada:
 
 ```
-<program> ::= <statement_list>
-
-<statement_list> ::= <statement>
+<program> ::= <statement>
 
 <statement> ::= <load_stmt>
               | <clean_stmt>
               | <normalize_stmt>
               | <save_stmt>
-              | <transform_stmt>
 
 <load_stmt> ::= "LOAD" <string> ["AS" <identifier>]
 
-<clean_stmt> ::= "CLEAN" <identifier> <clean_action_list>
-
-<clean_action_list> ::= <clean_action>
-                      | <clean_action> <clean_action_list>
+<clean_stmt> ::= "CLEAN" <identifier> <clean_action>
 
 <clean_action> ::= "DROP" <column_list>
                  | "FILL" <column_value_pairs>
@@ -44,15 +38,6 @@ Abaixo está um esboço simplificado (e não definitivo) de como a gramática da
 <normalize_stmt> ::= "NORMALIZE" <identifier>
 
 <save_stmt> ::= "SAVE" <identifier> ["TO" <string>]
-
-<transform_stmt> ::= "TRANSFORM" <identifier> "WITH" <transform_op_list>
-
-<transform_op_list> ::= <transform_op>
-                      | <transform_op> <transform_op_list>
-
-<transform_op> ::= ( "ADD" | "SUB" | "MULT" | "DIV" | "POT" )
-                   <column_list>
-                   <value>
 
 ;-------------------------------------------------------
 ; Definições auxiliares

@@ -1,44 +1,48 @@
-// Testes básicos
-LOAD "Testes/testeload.csv" AS t1;
-CLEAN t1;
-SAVE t1 AS "Testes/resultado_clean_padrao.csv"
-
 // Testes DROPROWS
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t2 DROPROWS;
-SAVE t2 AS "Testes/resultado_droprows_todas.csv"
 
-LOAD "Testes/testeload2.csv" AS t2;
+LOAD "Testes/csvs/teste_droprows.csv" AS t2;
+CLEAN t2 DROPROWS;
+SAVE t2 AS "Testes/results/resultado_droprows_todas.csv"
+
+LOAD "Testes/csvs/teste_droprows.csv" AS t2;
 CLEAN t2 DROPROWS idade, nome;
-SAVE t2 AS "Testes/resultado_droprows_especifico.csv"
+SAVE t2 AS "Testes/results/resultado_droprows_especifico.csv"
 
 // Testes DROP
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t2 DROP idade;
-SAVE t2 AS "Testes/resultado_drop_coluna.csv"
 
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t2 DROP idade, nome;
-SAVE t2 AS "Testes/resultado_drop_multiplas_colunas.csv"
+LOAD "Testes/csvs/teste_drop.csv" AS t2;
+CLEAN t2 DROP cargo,id;
+SAVE t2 AS "Testes/results/resultado_drop.csv"
 
 // Testes FILL
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t2 FILL idade = "0", nome = "desconhecido";
-SAVE t2 AS "Testes/resultado_fill.csv"
+
+LOAD "Testes/csvs/teste_fill.csv" AS t2;
+CLEAN t2 FILL idade = "0", nome = "desconhecido", email = "anonimo@anonimo.com";
+SAVE t2 AS "Testes/results/resultado_fill.csv"
 
 // Testes RENAME
-LOAD "Testes/testeload2.csv" AS t2;
+
+LOAD "Testes/csvs/teste_rename.csv" AS t2;
 CLEAN t2 RENAME idade = idadeAnos, nome = nomeCompleto;
-SAVE t2 AS "Testes/resultado_rename.csv"
+SAVE t2 AS "Testes/results/resultado_rename.csv"
 
 // Testes combinados
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t2 DROP idade;
-CLEAN t2 FILL nome = "desconhecido";
-CLEAN t2 RENAME nome = nomeCompleto;
-SAVE t2 AS "Testes/resultado_combinado.csv"
+
+LOAD "Testes/csvs/teste_drop.csv" AS t2;
+LOAD "Testes/csvs/teste_load_save.csv" AS t1;
+CLEAN t2 DROP cargo,id;
+CLEAN t1 DROP id;
+SAVE t2 AS "Testes/results/resultado_junto_1.csv";
+SAVE t1 AS "Testes/results/resultado_junto_2.csv"
+
+LOAD "Testes/csvs/teste_drop.csv" AS t2;
+CLEAN t2 DROP cargo,id;
+CLEAN t2 DROPROWS;
+CLEAN t2 RENAME nome = nome_completo;
+SAVE t2 AS "Testes/results/resultado_junto_3.csv"
 
 // Testes legados
+
 LOAD "Testes/testeload.csv" AS t1;
 CLEAN t1 WITH STRATEGY "fill";
 SAVE t1 AS "Testes/resultado_legado_fill.csv"
