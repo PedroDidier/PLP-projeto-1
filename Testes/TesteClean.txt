@@ -26,6 +26,17 @@ LOAD "Testes/csvs/teste_rename.csv" AS t2;
 CLEAN t2 RENAME idade = idadeAnos, nome = nomeCompleto;
 SAVE t2 AS "Testes/results/resultado_rename.csv"
 
+
+// Teste REPLACE
+
+LOAD "Testes/csvs/teste_replace.csv" AS t1;
+CLEAN t1 REPLACE cidade "recife"="fortaleza";
+SAVE t1 AS "Testes/results/resultado_replace.csv"
+
+LOAD "Testes/csvs/teste_replace.csv" AS t1;
+CLEAN t1 REPLACE idade "0"="NA";
+SAVE t1 AS "Testes/results/resultado_replace.csv"
+
 // Testes combinados
 
 LOAD "Testes/csvs/teste_drop.csv" AS t2;
@@ -40,6 +51,12 @@ CLEAN t2 DROP cargo,id;
 CLEAN t2 DROPROWS;
 CLEAN t2 RENAME nome = nome_completo;
 SAVE t2 AS "Testes/results/resultado_junto_3.csv"
+
+LOAD "Testes/csvs/teste_replace.csv" AS t1;
+CLEAN t1 DROP id,nome;
+CLEAN t1 REPLACE idade "0"="null";
+NORMALIZE dados idade,salario,cargo;
+SAVE t1 AS "Testes/results/resultado_junto_4.csv"
 
 // Testes legados
 

@@ -151,6 +151,7 @@ TOKEN : /* COMANDOS */
 | < FILL: "FILL" >
 | < DROPROWS: "DROPROWS" >
 | < RENAME: "RENAME" >
+| < REPLACE: "REPLACE" >
 }
 
 TOKEN : /* OPERATORS */
@@ -362,6 +363,7 @@ Comando PClean():
     Token t1;
     String nomeVariavel;
     String action;
+	String coluna;
     List columnList = new ArrayList();
     Map columnValuePairs = new HashMap();
     Map oldNewPairs = new HashMap();
@@ -386,6 +388,11 @@ Comando PClean():
         { action = "RENAME"; }
         oldNewPairs = POldNewPairList()
         { return new Clean(nomeVariavel, action, oldNewPairs, true); }
+	  | <REPLACE>
+	  	{ action = "REPLACE"; }
+		t1 = <IDENTIFIER> { coluna = t1.image; }
+		oldNewPairs = PReplacePairList()
+        { return new Clean(nomeVariavel, action, coluna, oldNewPairs); }
       | t1 = <IDENTIFIER> 
         { 
             action = t1.image; 
@@ -795,5 +802,25 @@ Map POldNewPairList():
         { pairs.put(oldName.image, newName.image); }
     )*
     { return pairs; }
+}
+
+Map PReplacePairList():
+{
+    Map<String, String> map = new HashMap<String, String>();
+    Token t1, t2;
+}
+{
+    t1 = <STRING_LITERAL> "=" t2 = <STRING_LITERAL>
+    {
+        map.put(t1.image.substring(1, t1.image.length() - 1), 
+                t2.image.substring(1, t2.image.length() - 1));
+    }
+    ( "," t1 = <STRING_LITERAL> "=" t2 = <STRING_LITERAL>
+        {
+            map.put(t1.image.substring(1, t1.image.length() - 1), 
+                    t2.image.substring(1, t2.image.length() - 1));
+        }
+    )*
+    { return map; }
 }
 

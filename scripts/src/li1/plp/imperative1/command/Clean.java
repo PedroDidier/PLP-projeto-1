@@ -63,6 +63,20 @@ public class Clean implements Comando {
         }
     }
 
+    // Construtor para REPLACE
+    public Clean(String nomeVariavel, String action, String coluna, Map oldNewPairs) {
+        this.nomeVariavel = nomeVariavel;
+        this.action = action;
+        this.columnList = new ArrayList<>();
+        this.columnList.add(coluna); // apenas uma coluna nesse caso
+        this.columnValuePairs = new HashMap<>();
+        this.oldNewPairs = new HashMap<String, String>();
+
+        for (Object key : oldNewPairs.keySet()) {
+            this.oldNewPairs.put((String) key, (String) oldNewPairs.get(key));
+        }
+    }
+
     // Para manter compatibilidade com o código anterior
     public Clean(String nomeVariavel, String strategy) {
         this.nomeVariavel = nomeVariavel;
@@ -240,6 +254,40 @@ public class Clean implements Comando {
                 resultado = String.join("\n", linhasRenomeadas);
                 System.out.println("Dataset limpo com sucesso. Colunas renomeadas: " + oldNewPairs.size());
             } 
+            else if (action.equals("REPLACE")) {
+                List<String> linhasSubstituidas = new ArrayList<>();
+                String[] header = linhas[0].split(",", -1);
+                int idxColuna = -1;
+
+                // Encontra o índice da coluna que será modificada
+                String colunaAlvo = columnList.get(0);
+                for (int i = 0; i < header.length; i++) {
+                    if (header[i].equals(colunaAlvo)) {
+                        idxColuna = i;
+                        break;
+                    }
+                }
+
+                if (idxColuna == -1) {
+                    throw new RuntimeException("Coluna '" + colunaAlvo + "' não encontrada.");
+                }
+
+                linhasSubstituidas.add(linhas[0]); // adiciona o cabeçalho
+
+                for (int i = 1; i < linhas.length; i++) {
+                    String[] campos = linhas[i].split(",", -1); // -1 preserva campos vazios no final
+                    if (campos.length > idxColuna) {
+                        String valorOriginal = campos[idxColuna];
+                        if (oldNewPairs.containsKey(valorOriginal)) {
+                            campos[idxColuna] = oldNewPairs.get(valorOriginal);
+                        }
+                    }
+                    linhasSubstituidas.add(String.join(",", campos));
+                }
+
+                resultado = String.join("\n", linhasSubstituidas);
+                System.out.println("Dataset limpo com sucesso. Valores substituídos conforme especificado.");
+            }
             else {
                 throw new RuntimeException("Ação de limpeza não reconhecida: " + action);
             }
