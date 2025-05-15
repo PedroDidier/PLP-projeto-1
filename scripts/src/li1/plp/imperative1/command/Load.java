@@ -100,7 +100,7 @@ public class Load implements Comando {
 
     public boolean checaTipo(AmbienteCompilacaoImperativa ambiente)
             throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
-        return true; // Se quiser, pode validar se a variável já foi usada antes, etc.
+        return true;
     }
     
 }

@@ -55,7 +55,7 @@ SAVE t2 AS "Testes/results/resultado_junto_3.csv"
 LOAD "Testes/csvs/teste_replace.csv" AS t1;
 CLEAN t1 DROP id,nome;
 CLEAN t1 REPLACE idade "0"="null";
-NORMALIZE dados idade,salario,cargo;
+NORMALIZE t1 idade,salario,cargo;
 SAVE t1 AS "Testes/results/resultado_junto_4.csv"
 
 // Testes legados

@@ -172,6 +172,7 @@ public class Normalize implements Comando {
             EntradaVaziaException, ErroTipoEntradaException {
 
         try {
+
             Id id = new Id(nomeVariavel);
             Valor valor = ambiente.get(id);
 
@@ -319,8 +320,7 @@ public class Normalize implements Comando {
             System.out.println("Dataset normalizado com sucesso.");
             
         } catch (Exception e) {
-            System.out.println("Erro ao normalizar dataset: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao limpar dataset: " + e.getMessage(), e);
         }
         
         return ambiente;
@@ -340,14 +340,7 @@ public class Normalize implements Comando {
 
     @Override
     public boolean checaTipo(AmbienteCompilacaoImperativa ambiente)
-            throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
-        try {
-            // Verifica se a variável existe
-            Id id = new Id(nomeVariavel);
-            ambiente.get(id);
-            return true;
-        } catch (VariavelNaoDeclaradaException e) {
-            throw new VariavelNaoDeclaradaException(new Id(nomeVariavel));
-        }
-    }
+            throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {        
+        return true;
+}
 }
