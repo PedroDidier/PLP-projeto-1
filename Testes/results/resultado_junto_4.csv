@@ -1,7 +1,7 @@
-idade,salario,cargo,cidade
-null,5000,analista,recife
-null,7500,gerente,recife
-22,4200,desenvolvedor,sao_paulo
-28,6800,analista,rio
-null,8200,gerente,sao_paulo
-24,4500,desenvolvedor,recife
+idade,salario,cidade_sao_paulo,cidade_recife,cargo_analista,cidade_rio,cargo_desenvolvedor,cargo_gerente
+null,-0.671380,0,1,1,0,0,0
+null,0.952926,0,1,0,0,0,1
+-1.069045,-1.191157,1,0,0,0,1,0
+1.336306,0.498120,0,0,1,1,0,0
+null,1.407731,1,0,0,0,0,1
+-0.267261,-0.996241,0,1,0,0,1,0

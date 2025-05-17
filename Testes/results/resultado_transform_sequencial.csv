@@ -1,0 +1,7 @@
+id,nome,idade,salario,cargo,cidade
+1,nicole,35.00,10000.300,analista,recife
+2,didier,40.00,15000.00,gerente,recife
+3,marcelo,32.00,8400.00,desenvolvedor,sao_paulo
+4,lucas,38.00,13600.00,analista,rio
+5,mariana,42.00,16400.00,gerente,sao_paulo
+6,felipe,34.00,9000.00,desenvolvedor,recife 

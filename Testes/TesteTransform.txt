@@ -4,45 +4,37 @@
 // 2. MULT - multiplicar valores em colunas numéricas
 
 // Testes com a operação ADD
-LOAD "Testes/csvs/teste_normalize.csv" AS dados;
+LOAD "Testes/csvs/teste_transform.csv" AS dados;
 TRANSFORM dados ADD idade=5, salario=1000;
-SAVE dados AS "Testes/results/resultado_transform_add.csv";
-
-// Carrega novamente para os próximos testes
-LOAD "Testes/csvs/teste_normalize.csv" AS dados;
+SAVE dados AS "Testes/results/resultado_transform_add.csv"
 
 // Teste com a operação MULT
+LOAD "Testes/csvs/teste_transform.csv" AS dados;
 TRANSFORM dados MULT idade=1.5, salario=1.1;
-SAVE dados AS "Testes/results/resultado_transform_mult.csv";
+SAVE dados AS "Testes/results/resultado_transform_mult.csv"
 
 // Teste com operações sequenciais (ADD seguido de MULT)
-LOAD "Testes/csvs/teste_normalize.csv" AS dados;
+LOAD "Testes/csvs/teste_transform.csv" AS dados;
 TRANSFORM dados ADD idade=10;
 TRANSFORM dados MULT salario=2;
-SAVE dados AS "Testes/results/resultado_transform_sequencial.csv";
+SAVE dados AS "Testes/results/resultado_transform_sequencial.csv"
 
 // Teste com valores decimais
-LOAD "Testes/csvs/teste_normalize.csv" AS dados;
+LOAD "Testes/csvs/teste_transform.csv" AS dados;
 TRANSFORM dados ADD salario=1500.75;
 TRANSFORM dados MULT idade=1.25;
-SAVE dados AS "Testes/results/resultado_transform_decimais.csv";
-
-// Teste combinando Transform com outros comandos
-LOAD "Testes/csvs/teste_normalize.csv" AS dados;
-CLEAN dados DROP nome, cargo, cidade; // Mantém apenas as colunas numéricas
-TRANSFORM dados ADD idade=2;
-TRANSFORM dados MULT salario=1.5;
-SAVE dados AS "Testes/results/resultado_transform_apos_clean.csv";
+SAVE dados AS "Testes/results/resultado_transform_decimais.csv"
 
 // Teste com nulos
 LOAD "Testes/csvs/teste_normalize_nulos.csv" AS dados_nulos;
-CLEAN dados_nulos FILL idade = "0", salario = "0"; // Preenche nulos com zeros
+CLEAN dados_nulos REPLACE cidade "rio"="rio de janeiro", ""="null";
+CLEAN dados_nulos FILL idade = "0", salario = "0", nome = "Anonimo"; // Preenche nulos com zeros
 TRANSFORM dados_nulos ADD idade=1;
 TRANSFORM dados_nulos MULT salario=1.2;
-SAVE dados_nulos AS "Testes/results/resultado_transform_com_nulos.csv";
+SAVE dados_nulos AS "Testes/results/resultado_transform_com_nulos.csv"
 
 // Teste de escalonamento - multiplicando e depois adicionando
-LOAD "Testes/csvs/teste_normalize.csv" AS dados;
-TRANSFORM dados MULT idade=0.1, salario=0.001; // Reduzir escala
-TRANSFORM dados ADD idade=20, salario=500; // Adicionar offset
-SAVE dados AS "Testes/results/resultado_transform_escalonamento.csv"; 
+LOAD "Testes/csvs/teste_transform.csv" AS dados;
+TRANSFORM dados MULT idade=0.1, salario=0.001; 
+TRANSFORM dados ADD idade=20, salario=500;
+SAVE dados AS "Testes/results/resultado_transform_escalonamento.csv"

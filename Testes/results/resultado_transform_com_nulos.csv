@@ -1,0 +1,7 @@
+id,nome,idade,salario,cargo,cidade
+1,nicole,26.00,6000.00,analista,recife
+2,Anonimo,31.00,0.00,gerente,vazio
+3,marcelo,1.00,5040.00,desenvolvedor,sao_paulo
+4,lucas,29.00,8160.00,,rio de janeiro
+5,mariana,33.00,9840.00,null,vazio
+6,Anonimo,1.00,5400.00,desenvolvedor,recife 

@@ -57,18 +57,21 @@ public class Normalize implements Comando {
         }
     }
 
-    // Detecta automaticamente se uma coluna é numérica
     private boolean isNumericColumn(String[] colValues) {
-        int numericCount = 0;
         for (String value : colValues) {
-            if (value != null && !value.trim().isEmpty() && 
-                !value.equals("NA") && !value.equals("null") && 
-                !value.equals("NULL") && isNumeric(value)) {
-                numericCount++;
+            if (value == null || value.trim().isEmpty() || 
+                value.equalsIgnoreCase("NA") || 
+                value.equalsIgnoreCase("null")) {
+                continue; // Ignora valores ausentes
+            }
+
+            if (!isNumeric(value)) {
+                return false; // Encontrou um valor não numérico válido
             }
         }
-        // Se mais de 70% dos valores (não nulos) são numéricos, consideramos a coluna como numérica
-        return numericCount > 0 && numericCount >= (colValues.length * 0.7);
+
+        // Se todos os valores válidos são numéricos, retorna true
+        return true;
     }
 
     // Aplica standard scaling em valores numéricos (z-score normalization)
@@ -192,12 +195,12 @@ public class Normalize implements Comando {
             }
 
             String cabecalho = linhas[0];
-            String[] colunas = cabecalho.split(",");
+            String[] colunas = cabecalho.split(",", -1);
             
             // Extrair dados em formato tabular
             List<String[]> dados = new ArrayList<>();
             for (int i = 1; i < linhas.length; i++) {
-                String[] valores = linhas[i].split(",");
+                String[] valores = linhas[i].split(",", -1);
                 // Garante que cada linha tenha o mesmo número de colunas que o cabeçalho
                 if (valores.length == colunas.length) {
                     dados.add(valores);

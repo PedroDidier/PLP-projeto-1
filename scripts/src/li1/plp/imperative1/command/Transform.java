@@ -100,7 +100,7 @@ public class Transform implements Comando {
             }
 
             String cabecalho = linhas[0];
-            String[] colunas = cabecalho.split(",");
+            String[] colunas = cabecalho.split(",", -1);
             
             // Mapear índices das colunas que serão transformadas
             Map<Integer, Double> indicesValores = new HashMap<>();
@@ -199,14 +199,7 @@ public class Transform implements Comando {
 
     @Override
     public boolean checaTipo(AmbienteCompilacaoImperativa ambiente)
-            throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
-        try {
-            // Verifica se a variável existe
-            Id id = new Id(nomeVariavel);
-            ambiente.get(id);
-            return true;
-        } catch (VariavelNaoDeclaradaException e) {
-            throw new VariavelNaoDeclaradaException(new Id(nomeVariavel));
-        }
+            throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {        
+        return true;
     }
 } 

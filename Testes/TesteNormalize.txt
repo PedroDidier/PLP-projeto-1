@@ -4,44 +4,16 @@
 // 2. One-hot encoding para colunas categóricas
 
 // Teste básico - normaliza todas as colunas
-LOAD "Testes/teste_normalize.csv" AS dados;
+LOAD "Testes/csvs/teste_normalize.csv" AS dados;
 NORMALIZE dados;
-SAVE dados AS "Testes/resultado_normalize_todas.csv";
+SAVE dados AS "Testes/results/resultado_normalize_todas.csv"
 
-// Carrega novamente para os próximos testes
-LOAD "Testes/teste_normalize.csv" AS dados;
-
-// Normaliza apenas colunas numéricas
-NORMALIZE dados idade, salario;
-SAVE dados AS "Testes/resultado_normalize_numericas.csv";
-
-// Carrega novamente para os próximos testes
-LOAD "Testes/teste_normalize.csv" AS dados;
-
-// Normaliza apenas colunas categóricas
-NORMALIZE dados cargo, cidade;
-SAVE dados AS "Testes/resultado_normalize_categoricas.csv";
-
-// Carrega novamente para o próximo teste
-LOAD "Testes/teste_normalize.csv" AS dados;
-
-// Normaliza uma mistura de colunas numéricas e categóricas
-NORMALIZE dados idade, cargo;
-SAVE dados AS "Testes/resultado_normalize_misto.csv";
-
-// Teste com limpeza de dados antes da normalização
-LOAD "Testes/teste_normalize.csv" AS dados;
-CLEAN dados DROP nome; // Remove a coluna nome
-NORMALIZE dados; // Normaliza todas as colunas restantes
-SAVE dados AS "Testes/resultado_normalize_apos_clean.csv";
+// Normaliza parte das colunas
+LOAD "Testes/csvs/teste_normalize.csv" AS dados;
+NORMALIZE dados cargo, cidade, idade;
+SAVE dados AS "Testes/results/resultado_normalize_algumas.csv"
 
 // Testes com valores nulos/ausentes
-LOAD "Testes/teste_normalize_nulos.csv" AS dados_nulos;
+LOAD "Testes/csvs/teste_normalize_nulos.csv" AS dados_nulos;
 NORMALIZE dados_nulos;
-SAVE dados_nulos AS "Testes/resultado_normalize_com_nulos.csv";
-
-// Teste de limpeza seguida de normalização para tratar os nulos
-LOAD "Testes/teste_normalize_nulos.csv" AS dados_nulos;
-CLEAN dados_nulos FILL idade = "0", salario = "0", cargo = "desconhecido", cidade = "desconhecido";
-NORMALIZE dados_nulos; // Normaliza após preenchimento dos nulos
-SAVE dados_nulos AS "Testes/resultado_normalize_apos_preencher_nulos.csv"; 
+SAVE dados_nulos AS "Testes/results/resultado_normalize_com_nulos.csv"
