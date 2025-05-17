@@ -103,43 +103,26 @@ Aqui está o diagrama de nossa DSL, com ênfase no que foi alterado pela equipe:
 Essa BNF ilustra apenas uma estrutura básica do que seria possível na linguagem. A ideia é permitir que o usuário escreva, por exemplo:
 
 ```
-LOAD "dados.csv"
-CLEAN DROP "coluna_x"
-CLEAN FILL "idade" WITH 0
-RENAME "nome" TO "nome_completo"
-NORMALIZE
-SAVE "saida.csv"
+LOAD "dataset.csv" AS dados;
+CLEAN dados REPLACE cidade "rio"="rio de janeiro", ""="null";
+CLEAN dados FILL idade = "0", salario = "0";
+TRANSFORM dados ADD idade=1;
+TRANSFORM dados MULT salario=1.2;
+SAVE dados AS "resultado.csv"
 ```
-# [DESATUALIZADA] Arquitetura de funcionamento 
+# Arquitetura de funcionamento 
 
 ![](imgs/image.png)
 
 Passo a passo:
 
-1. É dado um comando na DSL
-2. Parser lê o texto DSL e gera uma árvore (parse tree)
-3. Transformer traduz a parse tree para objetos úteis (AST)
-4. Cada objeto da AST é uma classe que representa uma instrução da DSL em Python
-5. Executor	executa os nós da AST usando pandas
-6. Retorno do resultado para o usuário
+1. É dado um comando na DSL;
+2. Lexer converte o comando em tokens;
+3. Parser interpreta os tokens e transforma em objetos;
+4. A sequência de objetos forma uma lista de comandos para serem executadas (AST);
+5. Executor	executa os nós da AST;
+6. Retorno do resultado para o usuário.
 
-# [DESATUALIZADA] Diagrama de Classes
-
-Estrutura de classes da AST (Abstract Syntax Tree), ou seja, como as instruções da DSL vão ser representadas no código Python.
-
-![](imgs/class_diag.png)
-
-##### [DESATUALIZADA] Classe base
-ASTNode 
- :arrow_right: Classe abstrata, que define a estrutura comum para todos os comandos.
- :arrow_right: Possui os métodos execute e validate, que devem ser sobrescritos por cada comando específico.
-
-##### [DESATUALIZADA] Subclasses 
-Cada comando da DSL é implementado como uma subclasse da ASTNode. 
- - LoadNode: Carrega um arquivo CSV.
- - SaveNode: Salva o DataFrame resultante.
- - NormalizeNode: Normaliza colunas numéricas ou transforma em categóricas
- - DropNode, FillNode, etc.: Realizam operações de limpeza, como remover colunas ou preencher valores ausentes.
 
 
 
