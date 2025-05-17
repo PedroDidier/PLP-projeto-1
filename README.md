@@ -1,6 +1,6 @@
 # Equipe
-- Pedro Didier Maranhão - pdm@cin.upfe.br
 - Nicole Charron - nc@cin.upfe.br
+- Pedro Didier Maranhão - pdm@cin.upfe.br
 
 # Proposta/Objetivo do Projeto
 Este projeto tem como objetivo desenvolver uma DSL (Domain-Specific Language) voltada para operações de carregamento, limpeza e normalização de dados.
@@ -8,15 +8,14 @@ Este projeto tem como objetivo desenvolver uma DSL (Domain-Specific Language) vo
 A DSL será uma extensão da linguagem imperativa 1 do JavaCC, de forma que sua utilização seja intuitiva, permitindo que pessoas não técnicas em dados escrevam scripts em uma linguagem de alto nível e expressiva, sem precisarem conhecer a fundo cada detalhe da API do Pandas.
  
 Quanto ao escopo, o propósito é oferecer uma DSL suficiente, capaz de lidar com múltiplas etapas do pipeline, como:
-- Normalização de valores
-- Salvamento e carregamento de datasets
+- Salvar e carregar datasets
 - Limpeza de dados (tratamento de valores ausentes, remoção de colunas e renames)
-- Transformação dos dados (PLUS)
+- Normalizar valores (a nível de coluna)
+- Transformação básica dos dados (a nível de coluna)
+  
 
-Para isso, será definida formalmente a gramática, criada uma arquitetura modular e implementado um parser que traduz as instruções da DSL para as operações correspondentes em Pandas.
-
-# Visão Básica da BNF
-Abaixo está um esboço simplificado (e não definitivo) de como a gramática da DSL poderia ser estruturada:
+# Visão da BNF
+Aqui está o diagrama de nossa DSL, com ênfase no que foi alterado pela equipe:
 
 ```
 <program> ::= <statement>
@@ -24,43 +23,76 @@ Abaixo está um esboço simplificado (e não definitivo) de como a gramática da
 <statement> ::= <load_stmt>
               | <clean_stmt>
               | <normalize_stmt>
+              | <transform_stmt>
               | <save_stmt>
+              | <statement> ";" <statement>
 
+;-------------------------------------------------------
+; Carregamento de dados
+;-------------------------------------------------------
 <load_stmt> ::= "LOAD" <string> ["AS" <identifier>]
 
+;-------------------------------------------------------
+; Limpeza de dados
+;-------------------------------------------------------
 <clean_stmt> ::= "CLEAN" <identifier> <clean_action>
 
 <clean_action> ::= "DROP" <column_list>
                  | "FILL" <column_value_pairs>
                  | "DROPROWS" [ <column_list> ]
-                 | "RENAME" <old_new_pair_list>
+                 | "RENAME" <rename_pairs>
+                 | "REPLACE" <identifier> <replace_pairs>
 
-<normalize_stmt> ::= "NORMALIZE" <identifier>
+;-------------------------------------------------------
+; Normalização de dados
+;-------------------------------------------------------
+<normalize_stmt> ::= "NORMALIZE" <identifier> [ <column_list> ]
 
-<save_stmt> ::= "SAVE" <identifier> ["TO" <string>]
+;-------------------------------------------------------
+; Transformação de dados
+;-------------------------------------------------------
+<transform_stmt> ::= "TRANSFORM" <identifier> <transform_action>
+
+<transform_action> ::= "ADD" <numeric_pairs>
+                     | "MULT" <numeric_pairs>
+
+;-------------------------------------------------------
+; Salvamento de dados
+;-------------------------------------------------------
+<save_stmt> ::= "SAVE" <identifier> "AS" <string>
 
 ;-------------------------------------------------------
 ; Definições auxiliares
 ;-------------------------------------------------------
-<column_list> ::= <string>
-                | <string> "," <column_list>
+<column_list> ::= <identifier>
+                | <identifier> "," <column_list>
 
 <column_value_pairs> ::= <column_value_pair>
                        | <column_value_pair> "," <column_value_pairs>
 
-<column_value_pair> ::= <string> "=" <string>
-                      | <string> "=" <number>
+<column_value_pair> ::= <identifier> "=" <string>
+                      | <identifier> "=" <number>
 
-<old_new_pair_list> ::= <old_new_pair>
-                      | <old_new_pair> "," <old_new_pair_list>
+<rename_pairs> ::= <rename_pair>
+                 | <rename_pair> "," <rename_pairs>
 
-<old_new_pair> ::= <string> "->" <string>
+<rename_pair> ::= <identifier> "=" <identifier>
+
+<replace_pairs> ::= <replace_pair>
+                  | <replace_pair> "," <replace_pairs>
+
+<replace_pair> ::= <string> "=" <string>
+
+<numeric_pairs> ::= <numeric_pair>
+                  | <numeric_pair> "," <numeric_pairs>
+
+<numeric_pair> ::= <identifier> "=" <number>
 
 <value> ::= <number>
           | <string>
           | <identifier>
 
-<number> ::= [0-9]+ ( "." [0-9]+ )?  ; // Exemplo simples: 123 ou 123.45
+<number> ::= [0-9]+ ( "." [0-9]+ )?
 
 <identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
 
@@ -78,7 +110,7 @@ RENAME "nome" TO "nome_completo"
 NORMALIZE
 SAVE "saida.csv"
 ```
-# Arquitetura de funcionamento 
+# [DESATUALIZADA] Arquitetura de funcionamento 
 
 ![](imgs/image.png)
 
@@ -91,18 +123,18 @@ Passo a passo:
 5. Executor	executa os nós da AST usando pandas
 6. Retorno do resultado para o usuário
 
-# Diagrama de Classes
+# [DESATUALIZADA] Diagrama de Classes
 
 Estrutura de classes da AST (Abstract Syntax Tree), ou seja, como as instruções da DSL vão ser representadas no código Python.
 
 ![](imgs/class_diag.png)
 
-#####  Classe base
+##### [DESATUALIZADA] Classe base
 ASTNode 
  :arrow_right: Classe abstrata, que define a estrutura comum para todos os comandos.
  :arrow_right: Possui os métodos execute e validate, que devem ser sobrescritos por cada comando específico.
 
-##### Subclasses 
+##### [DESATUALIZADA] Subclasses 
 Cada comando da DSL é implementado como uma subclasse da ASTNode. 
  - LoadNode: Carrega um arquivo CSV.
  - SaveNode: Salva o DataFrame resultante.
