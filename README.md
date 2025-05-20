@@ -18,86 +18,119 @@ Quanto ao escopo, o propósito é oferecer uma DSL suficiente, capaz de lidar co
 Aqui está o diagrama de nossa DSL, com ênfase no que foi alterado pela equipe:
 
 ```
-<program> ::= <statement>
+Programa ::= Comando
 
-<statement> ::= <load_stmt>
-              | <clean_stmt>
-              | <normalize_stmt>
-              | <transform_stmt>
-              | <save_stmt>
-              | <statement> ";" <statement>
+Comando ::= Atribuicao
+          | ComandoDeclaracao
+          | While
+          | IfThenElse
+          | IO
+          | Skip
+          | Comando ";" Comando
+          | LoadStmt 
+          | CleanStmt
+          | NormalizeStmt
+          | TransformStmt
+          | SaveStmt
+
+Skip ::= "skip"
+
+Atribuicao ::= Id ":=" Expressao
+
+Expressao ::= Valor 
+            | ExpUnaria 
+            | ExpBinaria 
+            | Id
+
+Valor ::= ValorConcreto
+
+ValorConcreto ::= ValorInteiro 
+                | ValorBooleano 
+                | ValorString
+
+ExpUnaria ::= "-" Expressao 
+            | "not" Expressao 
+            | "length" Expressao
+
+ExpBinaria ::= Expressao "+" Expressao
+             | Expressao "-" Expressao
+             | Expressao "and" Expressao
+             | Expressao "or" Expressao
+             | Expressao "==" Expressao
+             | Expressao "++" Expressao
+
+ComandoDeclaracao ::= "{" Declaracao ";" Comando "}"
+
+Declaracao ::= DeclaracaoVariavel 
+             | DeclaracaoComposta
+
+DeclaracaoVariavel ::= "var" Id "=" Expressao
+
+DeclaracaoComposta ::= Declaracao "," Declaracao
+
+While ::= "while" Expressao "do" Comando
+
+IfThenElse ::= "if" Expressao "then" Comando "else" Comando
+
+IO ::= "write" "(" Expressao ")" 
+     | "read" "(" Id ")"
 
 ;-------------------------------------------------------
-; Carregamento de dados
+; Comandos novos da DSL
 ;-------------------------------------------------------
-<load_stmt> ::= "LOAD" <string> ["AS" <identifier>]
 
-;-------------------------------------------------------
-; Limpeza de dados
-;-------------------------------------------------------
-<clean_stmt> ::= "CLEAN" <identifier> <clean_action>
+LoadStmt ::= "LOAD" StringLiteral ["AS" Id]
 
-<clean_action> ::= "DROP" <column_list>
-                 | "FILL" <column_value_pairs>
-                 | "DROPROWS" [ <column_list> ]
-                 | "RENAME" <rename_pairs>
-                 | "REPLACE" <identifier> <replace_pairs>
+CleanStmt ::= "CLEAN" Id CleanAction
 
-;-------------------------------------------------------
-; Normalização de dados
-;-------------------------------------------------------
-<normalize_stmt> ::= "NORMALIZE" <identifier> [ <column_list> ]
+CleanAction ::= "DROP" ColumnList
+              | "FILL" ColumnValuePairs
+              | "DROPROWS" [ ColumnList ]
+              | "RENAME" RenamePairs
+              | "REPLACE" Id ReplacePairs
 
-;-------------------------------------------------------
-; Transformação de dados
-;-------------------------------------------------------
-<transform_stmt> ::= "TRANSFORM" <identifier> <transform_action>
+NormalizeStmt ::= "NORMALIZE" Id [ ColumnList ]
 
-<transform_action> ::= "ADD" <numeric_pairs>
-                     | "MULT" <numeric_pairs>
+TransformStmt ::= "TRANSFORM" Id TransformAction
 
-;-------------------------------------------------------
-; Salvamento de dados
-;-------------------------------------------------------
-<save_stmt> ::= "SAVE" <identifier> "AS" <string>
+TransformAction ::= "ADD" NumericPairs
+                  | "MULT" NumericPairs
+
+SaveStmt ::= "SAVE" Id "AS" StringLiteral
 
 ;-------------------------------------------------------
 ; Definições auxiliares
 ;-------------------------------------------------------
-<column_list> ::= <identifier>
-                | <identifier> "," <column_list>
 
-<column_value_pairs> ::= <column_value_pair>
-                       | <column_value_pair> "," <column_value_pairs>
+ColumnList ::= Id | Id "," ColumnList
 
-<column_value_pair> ::= <identifier> "=" <string>
-                      | <identifier> "=" <number>
+ColumnValuePairs ::= ColumnValuePair 
+                   | ColumnValuePair "," ColumnValuePairs
 
-<rename_pairs> ::= <rename_pair>
-                 | <rename_pair> "," <rename_pairs>
+ColumnValuePair ::= Id "=" StringLiteral 
+                  | Id "=" Numero
 
-<rename_pair> ::= <identifier> "=" <identifier>
+RenamePairs ::= RenamePair 
+              | RenamePair "," RenamePairs
 
-<replace_pairs> ::= <replace_pair>
-                  | <replace_pair> "," <replace_pairs>
+RenamePair ::= Id "=" Id
 
-<replace_pair> ::= <string> "=" <string>
+ReplacePairs ::= ReplacePair 
+               | ReplacePair "," ReplacePairs
 
-<numeric_pairs> ::= <numeric_pair>
-                  | <numeric_pair> "," <numeric_pairs>
+ReplacePair ::= StringLiteral "=" StringLiteral
 
-<numeric_pair> ::= <identifier> "=" <number>
+NumericPairs ::= NumericPair 
+               | NumericPair "," NumericPairs
 
-<value> ::= <number>
-          | <string>
-          | <identifier>
+NumericPair ::= Id "=" Numero
 
-<number> ::= [0-9]+ ( "." [0-9]+ )?
+Numero ::= [0-9]+ ("." [0-9]+)?
 
-<identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
+Id ::= [a-zA-Z_][a-zA-Z0-9_]*
 
-<string> ::= "\"" [^\"]* "\""
-           | "'" [^']* "'"
+StringLiteral ::= "\"" [^\"]* "\"" 
+                | "'" [^']* "'"
 ```
 
 Essa BNF ilustra apenas uma estrutura básica do que seria possível na linguagem. A ideia é permitir que o usuário escreva, por exemplo:
