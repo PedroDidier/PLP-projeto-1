@@ -1,40 +1,42 @@
-// Teste do comando TRANSFORM
-// Este teste demonstra as funcionalidades de:
-// 1. ADD - adicionar valores a colunas numéricas
-// 2. MULT - multiplicar valores em colunas numéricas
+{
+    // Teste do comando TRANSFORM
+    // Este teste demonstra as funcionalidades de:
+    // 1. ADD - adicionar valores a colunas numéricas
+    // 2. MULT - multiplicar valores em colunas numéricas
 
-// Testes com a operação ADD
-LOAD "Testes/csvs/teste_transform.csv" AS dados;
-TRANSFORM dados ADD idade=5, salario=1000;
-SAVE dados AS "Testes/results/resultado_transform_add.csv"
+    // Testes com a operação ADD
+    VAR dados LOAD "Testes/csvs/teste_transform.csv";
+    TRANSFORM dados ADD idade=5, salario=1000;
+    SAVE dados AS "Testes/results/resultado_transform_add.csv";
 
-// Teste com a operação MULT
-LOAD "Testes/csvs/teste_transform.csv" AS dados;
-TRANSFORM dados MULT idade=1.5, salario=1.1;
-SAVE dados AS "Testes/results/resultado_transform_mult.csv"
+    // Teste com a operação MULT
+    VAR mult_test LOAD "Testes/csvs/teste_transform.csv";
+    TRANSFORM mult_test MULT idade=1.5, salario=1.1;
+    SAVE mult_test AS "Testes/results/resultado_transform_mult.csv";
 
-// Teste com operações sequenciais (ADD seguido de MULT)
-LOAD "Testes/csvs/teste_transform.csv" AS dados;
-TRANSFORM dados ADD idade=10;
-TRANSFORM dados MULT salario=2;
-SAVE dados AS "Testes/results/resultado_transform_sequencial.csv"
+    // Teste com operações sequenciais - ADD seguido de MULT
+    VAR seq_test LOAD "Testes/csvs/teste_transform.csv";
+    TRANSFORM seq_test ADD idade=10;
+    TRANSFORM seq_test MULT salario=2;
+    SAVE seq_test AS "Testes/results/resultado_transform_sequencial.csv";
 
-// Teste com valores decimais
-LOAD "Testes/csvs/teste_transform.csv" AS dados;
-TRANSFORM dados ADD salario=1500.75;
-TRANSFORM dados MULT idade=1.25;
-SAVE dados AS "Testes/results/resultado_transform_decimais.csv"
+    // Teste com valores decimais
+    VAR dados_dec LOAD "Testes/csvs/teste_transform.csv";
+    TRANSFORM dados_dec ADD salario=1500.75;
+    TRANSFORM dados_dec MULT idade=1.25;
+    SAVE dados_dec AS "Testes/results/resultado_transform_decimais.csv";
 
-// Teste com nulos
-LOAD "Testes/csvs/teste_normalize_nulos.csv" AS dados_nulos;
-CLEAN dados_nulos REPLACE cidade "rio"="rio de janeiro", ""="null";
-CLEAN dados_nulos FILL idade = "0", salario = "0", nome = "Anonimo"; // Preenche nulos com zeros
-TRANSFORM dados_nulos ADD idade=1;
-TRANSFORM dados_nulos MULT salario=1.2;
-SAVE dados_nulos AS "Testes/results/resultado_transform_com_nulos.csv"
+    // Teste com nulos
+    VAR null_test LOAD "Testes/csvs/teste_normalize_nulos.csv";
+    CLEAN null_test REPLACE cidade "rio"="rio de janeiro", ""="null";
+    CLEAN null_test FILL idade = "0", salario = "0", nome = "Anonimo"; // Preenche nulos com zeros
+    TRANSFORM null_test ADD idade=1;
+    TRANSFORM null_test MULT salario=1.2;
+    SAVE null_test AS "Testes/results/resultado_transform_com_nulos.csv";
 
-// Teste de escalonamento - multiplicando e depois adicionando
-LOAD "Testes/csvs/teste_transform.csv" AS dados;
-TRANSFORM dados MULT idade=0.1, salario=0.001; 
-TRANSFORM dados ADD idade=20, salario=500;
-SAVE dados AS "Testes/results/resultado_transform_escalonamento.csv"
+    // Teste de escalonamento - multiplicando e depois adicionando
+    VAR scale_test LOAD "Testes/csvs/teste_transform.csv";
+    TRANSFORM scale_test MULT idade=0.1, salario=0.001; 
+    TRANSFORM scale_test ADD idade=20, salario=500;
+    SAVE scale_test AS "Testes/results/resultado_transform_escalonamento.csv";
+}

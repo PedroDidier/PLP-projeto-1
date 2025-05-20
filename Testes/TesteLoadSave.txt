@@ -1,5 +1,12 @@
-LOAD "Testes/csvs/teste_load_save.csv" AS table
-
-LOAD "Testes/csvs/teste_load_save.csv" AS t1;
-LOAD "Testes/csvs/teste_load_save.csv" AS t2;
-SAVE t1 AS "Testes/results/resultado_load_save.csv"
+{
+    // Nova sintaxe VAR variavel LOAD "path"
+    VAR table LOAD "Testes/csvs/teste_load_save.csv";
+    VAR t1 LOAD "Testes/csvs/teste_load_save.csv";
+    VAR t2 LOAD "Testes/csvs/teste_load_save.csv";
+    VAR t3 LOAD "Testes/csvs/teste_load_save.csv";
+    
+    // Salvando os resultados
+    SAVE t1 AS "Testes/results/resultado_load_save_1.csv";
+    SAVE t2 AS "Testes/results/resultado_load_save_2.csv";
+    SAVE t3 AS "Testes/results/resultado_load_save_3.csv";
+}

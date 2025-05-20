@@ -3,12 +3,11 @@ package li1.plp.imperative1.command;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
-import java.util.EmptyStackException;
 import java.util.List;
 
 import li1.plp.expressions2.expression.Id;
 import li1.plp.expressions2.expression.Valor;
-import li1.plp.expressions2.memory.Contexto;
+import li1.plp.expressions2.expression.ValorString;
 import li1.plp.expressions2.memory.VariavelJaDeclaradaException;
 import li1.plp.expressions2.memory.VariavelNaoDeclaradaException;
 import li1.plp.imperative1.memory.AmbienteCompilacaoImperativa;
@@ -16,17 +15,24 @@ import li1.plp.imperative1.memory.AmbienteExecucaoImperativa;
 import li1.plp.imperative1.memory.EntradaVaziaException;
 import li1.plp.imperative1.memory.ErroTipoEntradaException;
 
-
-
 public class Load implements Comando {
     private String caminho;
     private String nomeVariavel;
 
+    /**
+     * Construtor para carregar um dataset e associá-lo a uma variável
+     * @param caminho O caminho do arquivo a ser carregado
+     * @param nomeVariavel O nome da variável onde o dataset será armazenado
+     */
     public Load(String caminho, String nomeVariavel) {
         this.caminho = caminho;
         this.nomeVariavel = nomeVariavel;
     }
 
+    /**
+     * Construtor para carregar um dataset sem associá-lo a uma variável
+     * @param caminho O caminho do arquivo a ser carregado
+     */
     public Load(String caminho) {
         this.caminho = caminho;
         this.nomeVariavel = null;
@@ -41,8 +47,8 @@ public class Load implements Comando {
     }
 
     public AmbienteExecucaoImperativa executar(AmbienteExecucaoImperativa ambiente)
-    throws VariavelJaDeclaradaException, VariavelNaoDeclaradaException,
-    EntradaVaziaException, ErroTipoEntradaException {
+            throws VariavelJaDeclaradaException, VariavelNaoDeclaradaException,
+            EntradaVaziaException, ErroTipoEntradaException {
 
         try {
             // Ler as linhas do arquivo
@@ -60,33 +66,33 @@ public class Load implements Comando {
                 }
     
                 // Criação do valor a ser armazenado (todo o conteúdo do arquivo)
-                Valor valor = new li1.plp.expressions2.expression.ValorString(String.join("\n", linhas));
+                ValorString valor = new ValorString(String.join("\n", linhas));
     
-                // Se o comando LOAD especifica um alias (ex: AS table)
+                // Se o comando LOAD especifica uma variável
                 if (nomeVariavel != null) {
-                    Id id = new Id(nomeVariavel); // Nome da variável (ex: table)
+                    Id id = new Id(nomeVariavel);
 
                     try {
-                        ambiente.changeValor(id, valor); // Tenta alterar valor da variável
+                        // Tenta alterar o valor da variável se ela já existir
+                        ambiente.changeValor(id, valor);
                     } catch (VariavelNaoDeclaradaException e) {
-                        // Garante que há um escopo ativo antes de mapear
-                        ambiente.incrementa();
-                        ambiente.map(id, valor); // Mapeia a variável se ainda não declarada
+                        // Se a variável não existir, cria um novo mapeamento
+                        ambiente.map(id, valor);
                     }
 
                     // Verifica se a variável foi corretamente armazenada
-                    Valor valorTable = ambiente.get(id); // Obter o valor da variável
-                    if (valorTable != null) {
-                        System.out.println("Valor de '" + nomeVariavel + "': " + valorTable);
+                    Valor valorArmazenado = ambiente.get(id);
+                    if (valorArmazenado != null) {
+                        System.out.println("Dataset '" + nomeVariavel + "' carregado com sucesso.");
                     } else {
-                        System.out.println("A variável '" + nomeVariavel + "' não foi encontrada no ambiente.");
+                        System.out.println("Erro ao carregar o dataset '" + nomeVariavel + "'.");
                     }
                 }
                 else {
-                    // Se não houver alias, apenas imprime o conteúdo
+                    // Se não houver nome de variável, apenas imprime o conteúdo
                     System.out.println("Conteúdo do arquivo:");
                     for (String linha : linhas) {
-                        System.out.println(linha); // Imprimir cada linha do arquivo
+                        System.out.println(linha);
                     }
                 }
             }
@@ -95,12 +101,11 @@ public class Load implements Comando {
             throw new RuntimeException("Erro ao carregar arquivo: " + caminho, e);
         }
 
-    return ambiente;
+        return ambiente;
     }
 
     public boolean checaTipo(AmbienteCompilacaoImperativa ambiente)
             throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
         return true;
     }
-    
 }

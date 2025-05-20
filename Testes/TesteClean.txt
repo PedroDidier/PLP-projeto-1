@@ -1,69 +1,60 @@
-// Testes DROPROWS
+{
+    // Testes DROPROWS
+    
+    VAR t2 LOAD "Testes/csvs/teste_droprows.csv";
+    CLEAN t2 DROPROWS;
+    SAVE t2 AS "Testes/results/resultado_droprows_todas.csv";
 
-LOAD "Testes/csvs/teste_droprows.csv" AS t2;
-CLEAN t2 DROPROWS;
-SAVE t2 AS "Testes/results/resultado_droprows_todas.csv"
+    VAR droprows_test LOAD "Testes/csvs/teste_droprows.csv";
+    CLEAN droprows_test DROPROWS idade, nome;
+    SAVE droprows_test AS "Testes/results/resultado_droprows_especifico.csv";
 
-LOAD "Testes/csvs/teste_droprows.csv" AS t2;
-CLEAN t2 DROPROWS idade, nome;
-SAVE t2 AS "Testes/results/resultado_droprows_especifico.csv"
+    // Testes DROP
 
-// Testes DROP
+    VAR t2_drop LOAD "Testes/csvs/teste_drop.csv";
+    CLEAN t2_drop DROP cargo,id;
+    SAVE t2_drop AS "Testes/results/resultado_drop.csv";
 
-LOAD "Testes/csvs/teste_drop.csv" AS t2;
-CLEAN t2 DROP cargo,id;
-SAVE t2 AS "Testes/results/resultado_drop.csv"
+    // Testes FILL
+    VAR fill_test LOAD "Testes/csvs/teste_fill.csv";
+    CLEAN fill_test FILL idade = "0", nome = "desconhecido", email = "anonimo@anonimo.com";
+    SAVE fill_test AS "Testes/results/resultado_fill.csv";
 
-// Testes FILL
+    // Testes RENAME
 
-LOAD "Testes/csvs/teste_fill.csv" AS t2;
-CLEAN t2 FILL idade = "0", nome = "desconhecido", email = "anonimo@anonimo.com";
-SAVE t2 AS "Testes/results/resultado_fill.csv"
-
-// Testes RENAME
-
-LOAD "Testes/csvs/teste_rename.csv" AS t2;
-CLEAN t2 RENAME idade = idadeAnos, nome = nomeCompleto;
-SAVE t2 AS "Testes/results/resultado_rename.csv"
+    VAR t2_rename LOAD "Testes/csvs/teste_rename.csv";
+    CLEAN t2_rename RENAME idade = idadeAnos, nome = nomeCompleto;
+    SAVE t2_rename AS "Testes/results/resultado_rename.csv";
 
 
-// Teste REPLACE
+    // Teste REPLACE
 
-LOAD "Testes/csvs/teste_replace.csv" AS t1;
-CLEAN t1 REPLACE cidade "recife"="fortaleza";
-SAVE t1 AS "Testes/results/resultado_replace.csv"
+    VAR replace_test LOAD "Testes/csvs/teste_replace.csv";
+    CLEAN replace_test REPLACE cidade "recife"="fortaleza";
+    SAVE replace_test AS "Testes/results/resultado_replace.csv";
 
-LOAD "Testes/csvs/teste_replace.csv" AS t1;
-CLEAN t1 REPLACE idade "0"="NA";
-SAVE t1 AS "Testes/results/resultado_replace.csv"
+    VAR t1_replace LOAD "Testes/csvs/teste_replace.csv";
+    CLEAN t1_replace REPLACE idade "0"="NA";
+    SAVE t1_replace AS "Testes/results/resultado_replace.csv";
 
-// Testes combinados
+    // Testes combinados
 
-LOAD "Testes/csvs/teste_drop.csv" AS t2;
-LOAD "Testes/csvs/teste_load_save.csv" AS t1;
-CLEAN t2 DROP cargo,id;
-CLEAN t1 DROP id;
-SAVE t2 AS "Testes/results/resultado_junto_1.csv";
-SAVE t1 AS "Testes/results/resultado_junto_2.csv"
+    VAR t2_comb LOAD "Testes/csvs/teste_drop.csv";
+    VAR t1 LOAD "Testes/csvs/teste_load_save.csv";
+    CLEAN t2_comb DROP cargo,id;
+    CLEAN t1 DROP id;
+    SAVE t2_comb AS "Testes/results/resultado_junto_1.csv";
+    SAVE t1 AS "Testes/results/resultado_junto_2.csv";
 
-LOAD "Testes/csvs/teste_drop.csv" AS t2;
-CLEAN t2 DROP cargo,id;
-CLEAN t2 DROPROWS;
-CLEAN t2 RENAME nome = nome_completo;
-SAVE t2 AS "Testes/results/resultado_junto_3.csv"
+    VAR combined_test LOAD "Testes/csvs/teste_drop.csv";
+    CLEAN combined_test DROP cargo,id;
+    CLEAN combined_test DROPROWS;
+    CLEAN combined_test RENAME nome = nome_completo;
+    SAVE combined_test AS "Testes/results/resultado_junto_3.csv";
 
-LOAD "Testes/csvs/teste_replace.csv" AS t1;
-CLEAN t1 DROP id,nome;
-CLEAN t1 REPLACE idade "0"="null";
-NORMALIZE t1 idade,salario,cargo;
-SAVE t1 AS "Testes/results/resultado_junto_4.csv"
-
-// Testes legados
-
-LOAD "Testes/testeload.csv" AS t1;
-CLEAN t1 WITH STRATEGY "fill";
-SAVE t1 AS "Testes/resultado_legado_fill.csv"
-
-LOAD "Testes/testeload2.csv" AS t2;
-CLEAN t2 WITH STRATEGY "drop";
-SAVE t2 AS "Testes/resultado_legado_drop.csv" 
+    VAR t1_comb LOAD "Testes/csvs/teste_replace.csv";
+    CLEAN t1_comb DROP id,nome;
+    CLEAN t1_comb REPLACE idade "0"="null";
+    NORMALIZE t1_comb idade,salario,cargo;
+    SAVE t1_comb AS "Testes/results/resultado_junto_4.csv";
+}

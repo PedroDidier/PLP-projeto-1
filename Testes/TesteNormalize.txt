@@ -1,19 +1,21 @@
-// Teste do comando NORMALIZE
-// Este teste demonstra as funcionalidades de:
-// 1. Standard-scaling para colunas numéricas
-// 2. One-hot encoding para colunas categóricas
+{
+    // Teste do comando NORMALIZE
+    // Este teste demonstra as funcionalidades de
+    // 1. Standard-scaling para colunas numéricas
+    // 2. One-hot encoding para colunas categóricas
 
-// Teste básico - normaliza todas as colunas
-LOAD "Testes/csvs/teste_normalize.csv" AS dados;
-NORMALIZE dados;
-SAVE dados AS "Testes/results/resultado_normalize_todas.csv"
+    // Teste básico - normaliza todas as colunas
+    VAR dados LOAD "Testes/csvs/teste_normalize.csv";
+    NORMALIZE dados;
+    SAVE dados AS "Testes/results/resultado_normalize_todas.csv";
 
-// Normaliza parte das colunas
-LOAD "Testes/csvs/teste_normalize.csv" AS dados;
-NORMALIZE dados cargo, cidade, idade;
-SAVE dados AS "Testes/results/resultado_normalize_algumas.csv"
+    // Normaliza parte das colunas
+    VAR dados2 LOAD "Testes/csvs/teste_normalize.csv";
+    NORMALIZE dados2 cargo, cidade, idade;
+    SAVE dados2 AS "Testes/results/resultado_normalize_algumas.csv";
 
-// Testes com valores nulos/ausentes
-LOAD "Testes/csvs/teste_normalize_nulos.csv" AS dados_nulos;
-NORMALIZE dados_nulos;
-SAVE dados_nulos AS "Testes/results/resultado_normalize_com_nulos.csv"
+    // Testes com valores nulos/ausentes
+    VAR dados_nulos LOAD "Testes/csvs/teste_normalize_nulos.csv";
+    NORMALIZE dados_nulos;
+    SAVE dados_nulos AS "Testes/results/resultado_normalize_com_nulos.csv";
+}
